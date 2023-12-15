@@ -1,27 +1,224 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap');
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+	--font-family: 'Raleway', sans-serif;
+	--font-size: 16;
+	--line-height: 24px;
+	--font-weight: 400;
+	--base-font-size: var(--font-size) px;
+	--calculator-height: 25rem;
+
+	--color-scheme: light dark;
+	--color: rgba(255, 255, 255, 0.87);
+	--background-color: #242424;
+
+	--font-synthesis: none;
+	--text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+
+	--max-container-size: 71.25rem;
+	--min-container-size: 13.5rem;
+	--body-text-color: #4d4d4d;
+	--border-color: #a5844b;
+	--anchor-color: #68b29a;
+	--callout-border-rgb: 230, 182, 47;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+	text-rendering: optimizeLegibility;
+}
+
+html {
+	height: 100%;
+	font-size: var(--base-font-size);
+}
+
+main {
+	flex: 1 0 auto;
+	max-width: var(--max-container-size);
+	min-width: var(--min-container-size);
+	margin: auto;
+	padding: 5rem 0 6.25rem 0;
+	min-height: calc(100vh - 7rem);
+}
+
+#__next {
+	display: flex;
+	flex-direction: column;
+}
+
+header {
+	width: 100%;
+	background: #a5844b;
+	height: 2.44rem;
+	display: flex;
+	/* justify-content: center; */
+	padding-left: 0.5rem;
+	align-items: center;
+}
+
+footer {
+	width: 100%;
+	background: #ece8e1;
+	height: 2.44rem;
+	display: flex;
+	justify-content: right;
+	align-items: center;
+	padding-right: 1rem;
+}
+
+a {
+	font-weight: 500;
+	color: #646cff;
+	text-decoration: inherit;
+}
+a:hover {
+	color: #535bf2;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+	height: 100%;
+	width: 100%;
+	font-family: var(--font-family);
+	color: var(--body-text-color);
+	line-height: normal;
+	font-weight: normal;
+	margin: 0;
+}
+
+h1 {
+	font-family: inherit;
+	font-size: 3.2em;
+	line-height: 1.1;
+}
+
+h2 {
+	font-family: inherit;
+	font-size: 2.5em;
+	line-height: 1.1;
+}
+
+h4 {
+	font-family: inherit;
+	font-size: 1.5em;
+	line-height: 1.1;
+}
+
+.button,
+button {
+	font-family: inherit;
+	text-align: center;
+	color: #333;
+	font-size: 1.125rem;
+	display: block;
+	border-radius: 0.3125rem;
+	padding: 0.625rem 1.25rem;
+	border: 0.125rem solid var(--border-color);
+	margin: 1.25rem auto;
+	font-weight: 600;
+	text-decoration: none;
+	-o-transition: 0.5s;
+	-ms-transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+	cursor: pointer;
+}
+
+.button:disabled,
+.button:hover:disabled,
+.button:active:disabled {
+	background: #ccc;
+	color: #979797;
+	border-color: #ccc;
+	cursor: not-allowed;
+}
+
+a {
+	text-decoration: none;
+	-o-transition: 0.5s;
+	-ms-transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+	background-color: transparent;
+	color: var(--anchor-color);
+}
+
+input,
+select,
+textarea {
+	line-height: 1.5625rem;
+	margin-bottom: 1.1875rem;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	transition: all 0.4s ease;
+	-webkit-transition: all 0.4s ease;
+	color: #8c8c8c;
+	font-size: 1rem;
+	background: #fff;
+	border: 0.125rem solid #ccc;
+	padding: 0.625rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	color: var(--border-color);
+	border-color: var(--border-color);
+	outline: 0;
+}
+
+.form_control {
+	display: block;
+	width: 100%;
+	height: 50px;
+	padding: 1rem 1.75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d8d8d8;
+	border-radius: 5px;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.error {
+	color: #ff0000;
+	font-size: 0.875rem;
+	padding-bottom: 0.5rem;
+}
+
+.loading {
+	font-size: 3rem;
+	font-weight: 900;
+	color: #4d4d4d;
+	text-align: center;
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		color: #213547;
+		background-color: #ffffff;
+	}
+	a:hover {
+		color: #747bff;
+	}
+	button {
+		background-color: #f9f9f9;
+	}
 }

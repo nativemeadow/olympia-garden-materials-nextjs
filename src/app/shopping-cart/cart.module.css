@@ -1,0 +1,150 @@
+.cart-title {
+	font-family: Aleo, sans-serif;
+	font-size: 43px;
+	font-weight: 700;
+	line-height: 64px;
+	margin: 0 2rem;
+}
+
+.cart-grid {
+	display: grid;
+	gap: 0.5rem;
+	grid-template-columns: 2fr;
+	grid-template-areas: 'leftSide' 'rightSide';
+	margin: 0 2rem;
+}
+
+#rightCart {
+	grid-area: rightSide;
+}
+
+#leftCart {
+	grid-area: leftSide;
+}
+
+.checkout-options {
+	display: flex;
+	gap: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+.checkout-options img {
+	width: 33%;
+	margin-right: 15px;
+}
+
+#leftCart h2 {
+	font-size: 1.875rem;
+	font-weight: 400;
+	line-height: 1.875rem;
+	margin: 1.5rem 0 1.5rem 0;
+}
+
+.options_box {
+	border: 2px solid #f2f2f2;
+	background-color: #fff;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.031372549);
+	border-radius: 7px;
+	padding: 20px;
+	display: flex;
+}
+
+.options_box .options_details {
+	color: #4d4d4d;
+}
+
+.options_box .options_details .options_title {
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 35px;
+	display: block;
+}
+
+.options_box .options_details .options_meta {
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 25px;
+}
+
+.options_box:visited .options_box:focus,
+.options_box:hover,
+.options_box:active {
+	text-decoration: none;
+	border-color: #a6081e;
+}
+
+.options_box.selected {
+	border: 2px solid #a6081e;
+}
+
+.cart_totals h5 {
+	color: #4d4d4d;
+	font-size: 30px;
+	line-height: 30px;
+	font-family: Aleo, sans-serif;
+	border-bottom: 1px solid #d8d8d8;
+	padding-bottom: 30px;
+	margin-bottom: 30px;
+}
+
+.summary {
+	width: 100%;
+	height: 10rem;
+}
+
+.summary {
+	width: 100%;
+	height: 10rem;
+}
+
+.order-summary {
+	border: 2px solid #f2f2f2;
+	padding: 20px;
+	border-radius: 7px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.031372549);
+}
+
+.order-summary h5 {
+	font-family: Aleo;
+	font-size: 1.875rem;
+	font-weight: 500;
+}
+
+.under_line {
+	border-bottom: 1px solid #d8d8d8;
+	padding-bottom: 30px;
+	margin-bottom: 30px;
+}
+
+.set_instructions,
+.set_total {
+	display: flex;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 30px;
+	justify-content: space-between;
+}
+
+.checkout_option {
+	font-weight: 100;
+}
+
+.summary_font {
+	font-size: 22px;
+	font-weight: 400;
+	padding: 20px 0;
+}
+
+@media screen and (min-width: 1023px) {
+	.cart-grid {
+		display: grid;
+		gap: 0.5rem;
+		grid-template-columns: 2fr 1fr;
+		grid-template-areas: 'leftSide rightSide';
+		margin: 0 0 0 0;
+	}
+
+	.cart-title {
+		margin: 0 0 0 0;
+	}
+}

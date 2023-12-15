@@ -1,0 +1,14 @@
+.tree li,
+.tree ol {
+	list-style-type: none;
+}
+
+.item_wrapper {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 0.5rem;
+}
+
+.icon {
+	margin-right: 0.5rem;
+}

@@ -1,0 +1,7 @@
+.product-galley {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	align-items: stretch;
+	width: 100%;
+}

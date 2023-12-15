@@ -1,0 +1,21 @@
+.title {
+	margin-top: -5rem;
+}
+
+.list {
+	display: block;
+	list-style-type: disc;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	padding-inline-start: 40px;
+}
+
+.list_item {
+	display: list-item;
+	text-align: match-parent;
+}
+
+.img {
+	width: 40%;
+	height: 40%;
+}

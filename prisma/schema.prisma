@@ -1,0 +1,299 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "relationJoins"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cart_items {
+  id            BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid          String?    @db.VarChar(255)
+  cart_id       BigInt     @db.UnsignedBigInt
+  category_id   BigInt     @db.UnsignedBigInt
+  product_id    BigInt     @db.UnsignedBigInt
+  sku           String     @unique(map: "cart_items_sku_unique") @db.VarChar(30)
+  category_slug String     @db.VarChar(255)
+  product_slug  String     @db.VarChar(255)
+  title         String     @db.VarChar(255)
+  quantity      Int
+  price         Decimal    @db.Decimal(10, 2)
+  image         String?    @db.VarChar(300)
+  unit          String?    @db.Text
+  color         String?    @db.VarChar(50)
+  created_at    DateTime?  @default(now()) @db.Timestamp(0)
+  updated_at    DateTime?  @db.Timestamp(0)
+  carts         carts      @relation(fields: [cart_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_items_cart_id_foreign")
+  categories    categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_items_category_id_foreign")
+  products      products   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_items_product_id_foreign")
+
+  @@index([cart_id], map: "cart_items_cart_id_foreign")
+  @@index([category_id], map: "cart_items_category_id_foreign")
+  @@index([product_id], map: "cart_items_product_id_foreign")
+}
+
+model carts {
+  id         BigInt       @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String?      @unique(map: "uuid") @db.VarChar(255)
+  user_id    BigInt       @db.UnsignedBigInt
+  created_at DateTime?    @default(now()) @db.Timestamp(0)
+  updated_at DateTime?    @db.Timestamp(0)
+  cart_items cart_items[]
+  users      users        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "carts_user_id_foreign")
+  orders     orders?
+
+  @@index([user_id], map: "carts_user_id_foreign")
+}
+
+model categories {
+  id                                                                     BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid                                                                   String?               @db.VarChar(255)
+  title                                                                  String                @db.VarChar(255)
+  slug                                                                   String                @db.VarChar(255)
+  description                                                            String                @db.Text
+  image                                                                  String                @db.VarChar(255)
+  is_active                                                              Boolean               @default(true)
+  category_order                                                         BigInt                @default(0) @db.UnsignedBigInt
+  parent_category                                                        BigInt?               @db.UnsignedBigInt
+  created_at                                                             DateTime?             @default(now()) @db.Timestamp(0)
+  updated_at                                                             DateTime?             @db.Timestamp(0)
+  cart_items                                                             cart_items[]
+  categories                                                             categories?           @relation("categoriesTocategories", fields: [parent_category], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categories_parent_category_foreign")
+  other_categories                                                       categories[]          @relation("categoriesTocategories")
+  category_categories_category_categories_category_idTocategories        category_categories[] @relation("category_categories_category_idTocategories")
+  category_categories_category_categories_parent_category_idTocategories category_categories[] @relation("category_categories_parent_category_idTocategories")
+  category_product                                                       category_product[]
+
+  @@index([parent_category], map: "categories_parent_category_foreign")
+  @@fulltext([title, description], map: "search_catagories")
+}
+
+model category_categories {
+  id                                                            BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+  category_id                                                   BigInt     @db.UnsignedBigInt
+  parent_category_id                                            BigInt     @db.UnsignedBigInt
+  created_at                                                    DateTime?  @db.Timestamp(0)
+  updated_at                                                    DateTime?  @db.Timestamp(0)
+  categories_category_categories_category_idTocategories        categories @relation("category_categories_category_idTocategories", fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "category_categories_category_id_foreign")
+  categories_category_categories_parent_category_idTocategories categories @relation("category_categories_parent_category_idTocategories", fields: [parent_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "category_categories_parent_category_id_foreign")
+
+  @@index([category_id], map: "category_categories_category_id_foreign")
+  @@index([parent_category_id], map: "category_categories_parent_category_id_foreign")
+}
+
+model category_product {
+  id            Int        @id @default(autoincrement()) @db.UnsignedInt
+  sku           String     @db.VarChar(30)
+  product_order Int
+  category_id   BigInt     @db.UnsignedBigInt
+  product_id    BigInt     @db.UnsignedBigInt
+  created_at    DateTime?  @db.Timestamp(0)
+  updated_at    DateTime?  @db.Timestamp(0)
+  categories    categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categories_products_category_foreign")
+  products      products   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categories_products_product_foreign")
+
+  @@index([category_id], map: "categories_products_category_foreign")
+  @@index([product_id], map: "categories_products_product_foreign")
+}
+
+model prices {
+  id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid           String?   @db.VarChar(255)
+  sku            String    @db.VarChar(30)
+  title          String    @db.VarChar(50)
+  description    String?   @db.VarChar(100)
+  image          String?   @db.VarChar(60)
+  price          Decimal   @db.Decimal(10, 2)
+  size           String?   @db.VarChar(100)
+  units          String?   @db.Text
+  coverage       String?   @db.VarChar(20)
+  coverage_value Decimal?  @db.Decimal(10, 2)
+  online_minimum Decimal?  @db.Decimal(10, 2)
+  product_id     BigInt?   @db.UnsignedBigInt
+  created_at     DateTime? @default(now()) @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+  products       products? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "prices_product_foreign")
+
+  @@index([product_id], map: "prices_product_foreign")
+  @@fulltext([title, description], map: "price_search")
+}
+
+model products {
+  id               BigInt             @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid             String?            @db.VarChar(255)
+  sku              String             @unique(map: "products_sku_unique") @db.VarChar(30)
+  slug             String             @unique(map: "products_slug_unique") @db.VarChar(255)
+  title            String             @db.VarChar(255)
+  description      String?            @db.VarChar(5000)
+  image            String?            @db.VarChar(300)
+  image_lens_size  Json?
+  extended         Json?
+  status           String             @default("Active") @db.VarChar(20)
+  created_at       DateTime?          @default(now()) @db.Timestamp(0)
+  updated_at       DateTime?          @db.Timestamp(0)
+  cart_items       cart_items[]
+  category_product category_product[]
+  prices           prices[]
+
+  @@fulltext([title, description], map: "product_search")
+}
+
+model user_phone {
+  id           BigInt          @id @default(autoincrement()) @db.UnsignedBigInt
+  type         user_phone_type @default(mobile)
+  uuid         String?         @unique(map: "user_phone_uuid_unique") @db.VarChar(255)
+  phone_number String          @db.VarChar(255)
+  user_id      BigInt          @db.UnsignedBigInt
+  created_at   DateTime?       @default(now()) @db.Timestamp(0)
+  updated_at   DateTime?       @db.Timestamp(0)
+  users        users?          @relation(fields: [uuid], references: [uuid], onDelete: Cascade, map: "users_uuid")
+
+  @@index([user_id], map: "users_id")
+}
+
+model users {
+  id                BigInt              @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid              String?             @unique(map: "uuid") @db.VarChar(255)
+  customer_type     users_customer_type @default(Registered)
+  username          String?             @unique(map: "users_username_unique") @db.VarChar(20)
+  name              String              @db.VarChar(255)
+  password          String              @db.VarChar(255)
+  email             String              @unique(map: "users_email_unique") @db.VarChar(255)
+  email_verified_at DateTime?           @db.Timestamp(0)
+  reset_token       String              @db.VarChar(300)
+  refresh_token     String?             @db.VarChar(100)
+  created_at        DateTime?           @default(now()) @db.DateTime(0)
+  updated_at        DateTime?           @db.DateTime(0)
+  carts             carts[]
+  user_address      user_address?
+  user_phone        user_phone?
+  users_accounts    users_accounts[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model user_address {
+  id             Int               @id @default(autoincrement())
+  user_uuid      String?           @unique(map: "user_uuid") @db.VarChar(255)
+  name           String?           @db.VarChar(100)
+  type           user_address_type
+  phone          String?           @db.VarChar(20)
+  address        String?           @db.VarChar(50)
+  city           String?           @db.VarChar(20)
+  state_province String?           @db.VarChar(20)
+  postal_code    String?           @db.VarChar(20)
+  country        String?           @db.VarChar(5)
+  company        String?           @db.VarChar(29)
+  created_at     DateTime          @default(now()) @db.DateTime(0)
+  updated_at     DateTime?         @db.DateTime(0)
+  orders         orders[]
+  users          users?            @relation(fields: [user_uuid], references: [uuid], onDelete: Cascade, map: "user_address_fk")
+}
+
+model orders {
+  id                      Int           @id @default(autoincrement())
+  user_id                 String?       @db.VarChar(36)
+  cart_uuid               String?       @unique(map: "card_uuid") @db.VarChar(255)
+  order_date              DateTime      @default(now()) @db.Timestamp(0)
+  tax_rate                Decimal?      @db.Decimal(8, 0)
+  total_price             Decimal?      @db.Decimal(10, 0)
+  delivery_instructions   String?       @db.Text
+  purchase_order          String?       @db.VarChar(50)
+  requested_delivery_date DateTime?     @db.Date
+  address_id              Int?
+  manual_address          Json?
+  pickup_date             DateTime?     @db.Date
+  pickup_time             DateTime?     @db.Time(0)
+  is_delivery             Boolean?      @default(false)
+  is_pickup               Boolean?      @default(false)
+  is_paid                 Boolean       @default(false)
+  is_delivered            Boolean       @default(false)
+  payment_method          String?       @db.VarChar(20)
+  confirm_order           Boolean       @default(false)
+  created_at              DateTime      @default(now()) @db.DateTime(0)
+  updated_at              DateTime?     @db.DateTime(0)
+  carts                   carts?        @relation(fields: [cart_uuid], references: [uuid], onDelete: Cascade, map: "cart_uuid")
+  user_address            user_address? @relation(fields: [address_id], references: [id], onDelete: Cascade, map: "delivery_address")
+
+  @@index([user_id], map: "user-order")
+  @@index([address_id], map: "user_address_id")
+}
+
+model contact_us {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  email      String?  @db.VarChar(30)
+  name       String?  @db.VarChar(100)
+  phone      String?  @db.VarChar(20)
+  subject    String?  @db.Text
+  comment    String?  @db.Text
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @db.DateTime(0)
+
+  @@index([email], map: "email_idx")
+}
+
+model media {
+  id         Int      @id @default(autoincrement())
+  UUID       String   @db.VarChar(255)
+  type       String   @db.VarChar(30)
+  image      String   @db.VarChar(100)
+  comment    String   @db.Text
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @db.Timestamp(0)
+}
+
+model account {
+  id             Int              @id @default(autoincrement()) @db.UnsignedInt
+  uuid           String?          @unique(map: "uuid_index") @db.VarChar(255)
+  name           String           @unique(map: "name_index") @db.VarChar(100)
+  type           account_type
+  role           account_role
+  created_at     DateTime         @default(now()) @db.DateTime(0)
+  updated_at     DateTime         @db.DateTime(0)
+  users_accounts users_accounts[]
+}
+
+model users_accounts {
+  id           Int      @id @default(autoincrement())
+  users_uuid   String   @db.VarChar(255)
+  account_uuid String   @db.VarChar(255)
+  created_at   DateTime @default(now()) @db.DateTime(0)
+  account      account  @relation(fields: [account_uuid], references: [uuid], onUpdate: Restrict, map: "account-fkey")
+  users        users    @relation(fields: [users_uuid], references: [uuid], onUpdate: Restrict, map: "users_fkey")
+
+  @@index([account_uuid], map: "account-fkey")
+  @@index([users_uuid], map: "users_fkey")
+}
+
+enum user_phone_type {
+  home
+  work
+  mobile
+  other
+}
+
+enum users_customer_type {
+  Registered
+  Guest
+}
+
+enum user_address_type {
+  Billing
+  Shipping
+  BillingShipping
+}
+
+enum account_type {
+  Administrator
+  Auditor
+  Customer
+  Guest
+}
+
+enum account_role {
+  Administrator
+  Auditor
+  Customer
+  Guest
+}

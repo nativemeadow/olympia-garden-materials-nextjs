@@ -1,0 +1,169 @@
+.message-enter {
+	opacity: 0;
+}
+
+.message-enter-active {
+	opacity: 1;
+	transition: opacity 300ms;
+}
+
+.message-exit {
+	opacity: 1;
+}
+
+.message-exit-active {
+	opacity: 0;
+	transition: opacity 300ms;
+}
+
+.override {
+	width: inherit;
+}
+
+.content-wrapper {
+	display: block;
+}
+
+.wrapper {
+	width: 92%;
+}
+
+.edit {
+	display: block;
+	width: 400px;
+	/* margin: auto; */
+}
+
+.field {
+	width: 100%;
+}
+
+.form-control {
+	margin: 0;
+}
+
+.form-control label,
+.form-control input,
+.form-control textarea {
+	display: block;
+}
+
+.form-fields-grid {
+	display: grid;
+	grid-template-columns: 12rem 25rem 2rem;
+	grid-template-rows: auto;
+	grid-gap: 0.5rem;
+	width: 100%;
+}
+
+.error-message-wrapper {
+	grid-column-start: 1;
+}
+
+.form-control label {
+	font-weight: bold;
+	/* margin-bottom: 0.5rem; */
+}
+
+.form-control input,
+.form-control textarea {
+	width: 100%;
+	/* font: inherit;
+    border: 1px solid #ccc;
+    background: #f8f8f8; */
+	/* padding: 0.15rem 0.25rem; */
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+	outline: none;
+	background: #ebebeb;
+	border-color: #510077;
+}
+
+.form-control--invalid label,
+.form-control--invalid p {
+	color: red;
+}
+
+.form-control--invalid input,
+.form-control--invalid textarea {
+	border-color: red;
+	background: #ffd1d1;
+}
+
+.error {
+	color: #aa081e;
+	font-size: 1rem;
+	text-align: left;
+	background-color: #fff;
+	padding: 0.5rem;
+	border-color: #aa081e;
+	border-width: thin;
+	border-radius: 0.15rem;
+}
+
+.required {
+	color: #aa081e;
+	font-size: 1.5rem;
+}
+
+.form-field {
+	display: block;
+	line-height: 25px;
+	width: 100%;
+	/* margin-bottom: 1rem; */
+	color: #666;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.form-field-label {
+	color: #666;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.number_input {
+	width: 5rem;
+}
+
+.label {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.title,
+.slug,
+.image {
+	line-height: 25px;
+	width: 100%;
+	margin-bottom: 1rem;
+}
+
+.image {
+	margin-top: 2rem;
+	width: 30%;
+}
+
+.button {
+	margin-left: 0;
+	background-color: #fff;
+	width: 25%;
+}
+
+.button:hover,
+.button:active {
+	background-color: var(--border-color);
+	color: #fff;
+}
+
+.button:disabled,
+.button:hover:disabled,
+.button:active:disabled {
+	background: #ccc;
+	color: #979797;
+	border-color: #ccc;
+	cursor: not-allowed;
+}
