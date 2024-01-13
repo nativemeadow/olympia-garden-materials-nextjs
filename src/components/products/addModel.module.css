@@ -1,0 +1,25 @@
+.item-modal-header {
+	background-color: #fff;
+	color: #aa081e;
+}
+
+.item-modal-header h2 {
+	font-family: Aleo, serif;
+	font-size: 1.5rem;
+}
+
+.addToCart-modal-content {
+	padding: 0;
+}
+
+.addToCart-item-modal-actions {
+	text-align: right;
+}
+
+.addToCart-item-modal-actions button {
+	margin: 0;
+}
+
+.addToCartButton {
+	margin-right: 0;
+}

@@ -1,6 +1,5 @@
 import React from 'react';
-import { PrismaClient } from '@prisma/client';
-import parse from 'html-react-parser';
+import { db } from '@/db';
 import { parseCustomJson } from '@/lib/custom-json';
 import ProductDetail from '@/components/products';
 
@@ -9,8 +8,6 @@ type Props = {
 		productSlug: string;
 	};
 };
-
-const db = new PrismaClient();
 
 const ProductPage = async ({ params }: Props) => {
 	const slug = params.productSlug;

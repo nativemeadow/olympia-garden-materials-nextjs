@@ -1,10 +1,8 @@
 import React from 'react';
-import { PrismaClient } from '@prisma/client';
+import { db } from '@/db';
 import { parseCustomJson } from '@/lib/custom-json';
 import { Category } from '@/lib/types';
 import CategoryList from '@/components/categories/list';
-
-const db = new PrismaClient();
 
 const CategoriesPage = async () => {
 	//let categories: Omit<Category[], 'category_product' | 'parent_category'>;
@@ -15,7 +13,7 @@ const CategoriesPage = async () => {
 		},
 	})) as Category[];
 
-	console.log('categories: ', categories);
+	//console.log('categories: ', categories);
 
 	return <CategoryList categories={categories} />;
 };

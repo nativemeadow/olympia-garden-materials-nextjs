@@ -1,3 +1,114 @@
+import z from 'zod';
+
+export const loginSchema = z.object({
+	email: z.string().email(),
+	password: z.string().max(100),
+});
+
+export type TLoginSchema = z.infer<typeof loginSchema>;
+
+// export const changePasswordSchema = z.object({
+// 	currentPassword: z.string(),
+// 	newPassword: z.string(),
+// 	confirmPassword: z.string(),
+// });
+
+// export type TChangePassword = z.infer<typeof changePasswordSchema>;
+
+export const registerSchema = z.object({
+	name: z.string().min(3, { message: 'please enter you name.' }).max(100),
+	email: z.string().email({ message: 'email does not appear to be valid' }),
+	password: z
+		.string()
+		.min(6, { message: 'password must be at least 6 characters' })
+		.max(100),
+	confirmPassword: z
+		.string()
+		.min(6, { message: 'confirmation password is required' })
+		.max(100),
+});
+
+export type TRegisterSchema = z.infer<typeof registerSchema>;
+
+export const forgotPasswordSchema = z.object({
+	email: z.string().email(),
+});
+
+export type TForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+	.object({
+		oldPassword: z
+			.string()
+			.min(5, { message: 'current password required' }),
+		password: z
+			.string()
+			.min(6, {
+				message: 'new password required, must be at least 6 character',
+			})
+			.max(100),
+		confirmPassword: z
+			.string()
+			.min(6, { message: 'confirm your new password' })
+			.max(100),
+	})
+	.refine((data) => data.confirmPassword === data.password, {
+		message: `Passwords don't match`,
+		path: ['confirm'],
+	});
+
+export type TResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
+
+export const addressSchema = z.object({
+	phone: z
+		.string()
+		.min(10, { message: 'please enter a 10 digit phone number' }),
+	address: z.string().min(3, { message: 'please enter your address' }),
+	city: z.string().min(3, { message: 'please enter your city' }),
+	stateProvince: z.string().min(1, { message: 'please select your state' }),
+	postalCode: z.string().min(3, { message: 'please enter your postal code' }),
+});
+
+export type TAddressSchema = z.infer<typeof addressSchema>;
+
+export const userAddressSchema = z.object({
+	phone: z.string().min(10, { message: 'phone number is required' }),
+	address: z.string().min(5, { message: 'address is required' }),
+	city: z.string().min(3, { message: 'city is required' }),
+	stateProvince: z.string().min(2, { message: 'state/province is required' }),
+	postalCode: z.string().min(5, { message: 'postal code is required' }),
+});
+
+export type TUserAddressSchema = z.infer<typeof userAddressSchema>;
+
+export type userType =
+	| {
+			name?: string | null;
+			email?: string | null;
+			id?: string | null;
+			uuid?: string | null;
+	  }
+	| undefined;
+
+export type tokenType = {
+	token: string;
+};
+
+export type loginType = {
+	email: string;
+	password: string;
+};
+
+export type loginResponseType = {
+	errors?: {
+		content?: string[];
+		_form?: string[];
+	};
+	success?: boolean;
+	token?: string;
+	refreshToken?: string;
+};
+
 export type Category = {
 	id: bigint;
 	uuid: string | null;

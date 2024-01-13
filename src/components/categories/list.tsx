@@ -15,7 +15,7 @@ const CategoryList = (props: Props) => {
 	const { categories } = props;
 	const paths = usePathname();
 	const pathNames = paths?.split('/').filter((path) => path);
-	console.log('pathname: ', pathNames);
+	//console.log('pathname: ', pathNames);
 	const homePath = pathNames?.length === 1 ? pathNames[0] : 'categories';
 
 	if (!categories) {

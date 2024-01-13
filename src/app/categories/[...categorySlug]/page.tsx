@@ -1,5 +1,5 @@
 import React from 'react';
-import { PrismaClient } from '@prisma/client';
+import { db } from '@/db';
 import parse from 'html-react-parser';
 import { parseCustomJson } from '@/lib/custom-json';
 import CategoryDetail from '@/components/categories/detail';
@@ -11,8 +11,6 @@ type Props = {
 		categorySlug: string[];
 	};
 };
-
-const db = new PrismaClient();
 
 const CategoryPage = async ({ params }: Props) => {
 	console.log('CategoryPage: ', params);

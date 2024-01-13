@@ -69,9 +69,12 @@
 
 .modal__footer {
 	padding: 1rem 0.5rem;
+	background: #ece8e1;
 	display: flex;
 	justify-content: space-around;
 	margin-top: 3rem;
+	border-radius: 0.5rem;
+	height: auto;
 }
 
 .modal-enter {

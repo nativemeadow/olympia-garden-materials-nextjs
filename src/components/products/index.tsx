@@ -18,6 +18,7 @@ import Calculator from './calculator';
 
 import classes from './product.module.css';
 import styles from './calculator.module.css';
+import addStyle from './addModel.module.css';
 
 const productLabelMessage = 'Please Select Product Options';
 
@@ -266,7 +267,6 @@ const ProductDetail = ({ product, sku }: Props) => {
 
 	const viewShoppingCartHandler = () => {
 		setShowAddToCart(false);
-		//navigate('/shopping-cart');
 	};
 
 	return (
@@ -275,19 +275,19 @@ const ProductDetail = ({ product, sku }: Props) => {
 				show={showAddToCart}
 				onCancel={closeAddToCartHandler}
 				header={'Add to Cart'}
-				headerClass='item__modal-header'
-				contentClass='addToCart-item__modal-content'
-				footerClass='addToCart-item__modal-actions'
+				headerClass={addStyle['item-modal-header']}
+				contentClass={addStyle['addToCart-item-modal-content']}
+				footerClass={addStyle['addToCart-item-modal-actions']}
 				footer={
 					<>
 						<Button
-							overRideCssClass={'addToCartButton'}
+							overRideCssClass={addStyle['addToCartButton']}
 							onClick={viewShoppingCartHandler}
 						>
 							View Cart
 						</Button>
 						<Button
-							overRideCssClass={'addToCartButton'}
+							overRideCssClass={addStyle['addToCartButton']}
 							onClick={closeAddToCartHandler}
 						>
 							Continue Shopping
@@ -296,7 +296,6 @@ const ProductDetail = ({ product, sku }: Props) => {
 				}
 			>
 				<div className={classes['addToCart-dialog']}>
-					<h2>Add to Cart</h2>
 					<p>1 Item(s) Consolidated into cart.</p>
 				</div>
 			</Modal>
@@ -307,6 +306,8 @@ const ProductDetail = ({ product, sku }: Props) => {
 						height={500}
 						className={classes.detail_image}
 						src={`/images/products/${productImage}`}
+						placeholder='blur'
+						blurDataURL='/images/loading.png'
 						alt={product.title}
 					/>
 

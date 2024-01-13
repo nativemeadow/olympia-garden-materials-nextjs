@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { Product, Pricing, SelectListOptions } from '@/lib/types';
 import parse from 'html-react-parser';

@@ -64,6 +64,8 @@ const ProductCard = (props: Props) => {
 									: `/images/products/${product.image}`
 							}
 							loading='lazy'
+							placeholder='blur'
+							blurDataURL='/images/loading.png'
 							alt={
 								product.title !== undefined ? product.title : ''
 							}

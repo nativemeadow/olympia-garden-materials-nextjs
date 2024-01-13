@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useRef, FormEvent, useEffect } from 'react';
 import {
 	Product,
@@ -83,32 +85,90 @@ const Calculator = (props: Props) => {
 		setDepthMeasure(depthBy);
 	};
 
-	const handleCalculate = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleCalculate = (
+		event:
+			| React.FormEvent<HTMLFormElement>
+			| React.MouseEvent<HTMLButtonElement>
+	) => {
 		event!.preventDefault();
 		console.log('handleCalculate');
-		console.log('depthMeasure: ', depthMeasure);
+		console.log('depthMeasure: ', depthMeasure, 'calcUnits: ', calcUnits);
 
 		const length = lengthRef.current?.value;
 		const width = widthRef.current?.value;
 		const sqrFoot = sqrFootRef.current?.value;
 		const depth = depthRef.current?.value;
 		const selectedDepthMeasure = depthMeasureRef?.current;
+		let qtyNeeded = resultsRef.current?.value as unknown as number;
 
-		if (sqrFoot) {
+		if (depthMeasure === '12') {
 			if (calcUnits === 'yd') {
+				qtyNeeded =
+					(Number(length) *
+						Number(width) *
+						(Number(depth) / Number(selectedDepthMeasure))) /
+					27;
+				// if (!isNaN(qtyNeeded)) {
+				// 	resultsRef.current!.value = qtyNeeded.toFixed(2);
+				// 	adjustedRef.current!.value = Math.max(
+				// 		1,
+				// 		Math.ceil(qtyNeeded * 2) / 2
+				// 	).toFixed(2);
+				// }
+			} else if (calcUnits === 'ton') {
+				console.log('calcUnits: ', calcUnits);
 				const qtyNeeded =
 					(Number(length) *
 						Number(width) *
 						(Number(depth) / Number(selectedDepthMeasure))) /
 					27;
-				if (!isNaN(qtyNeeded)) {
-					resultsRef.current!.value = qtyNeeded.toFixed(2);
-					adjustedRef.current!.value = Math.max(
-						1,
-						Math.ceil(qtyNeeded * 2) / 2
-					).toFixed(2);
-				}
+				// if (!isNaN(qtyNeeded)) {
+				// 	resultsRef.current!.value = qtyNeeded.toFixed(2);
+				// 	adjustedRef.current!.value = Math.max(
+				// 		1,
+				// 		Math.ceil(qtyNeeded * 2) / 2
+				// 	).toFixed(2);
+				// }
 			}
+		}
+		console.log(
+			'width: ',
+			width,
+			'length: ',
+			length,
+			'depth: ',
+			depth,
+			'qtyNeeded: ',
+			qtyNeeded
+		);
+		resultsRef.current!.value = qtyNeeded.toString();
+		console.log('resultsRef.current!.value: ', resultsRef.current!.value);
+	};
+
+	const handleReset = (event: React.MouseEvent<HTMLButtonElement>) => {
+		if (lengthRef.current) {
+			lengthRef.current.value = '';
+		}
+		if (widthRef.current) {
+			widthRef.current.value = '';
+		}
+		if (sqrFootRef.current) {
+			sqrFootRef.current.value = '';
+		}
+		if (depthRef.current) {
+			depthRef.current.value = '';
+		}
+		if (resultsRef.current) {
+			resultsRef.current.value = '';
+		}
+		if (adjustedRef.current) {
+			adjustedRef.current.value = '';
+		}
+		if (costRef.current) {
+			costRef.current.value = '';
+		}
+		if (subTotalRef.current) {
+			subTotalRef.current.value = '';
 		}
 	};
 
@@ -179,10 +239,16 @@ const Calculator = (props: Props) => {
 
 				<div className={classes.calc_buttons}>
 					<div className={classes.calc_button_group}>
-						<button className={classes.calc_button_item}>
+						<button
+							className={classes.calc_button_item}
+							onClick={handleCalculate}
+						>
 							Calculate
 						</button>
-						<button className={classes.calc_button_item}>
+						<button
+							className={classes.calc_button_item}
+							onClick={handleReset}
+						>
 							Reset
 						</button>
 					</div>
