@@ -136,8 +136,6 @@ const ProfilePage = () => {
 		}
 	}, [userAddress, setValue]);
 
-	// const profile = getValues();
-
 	if (status === 'loading') {
 		return <div>Loading...</div>;
 	}

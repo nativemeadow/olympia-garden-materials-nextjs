@@ -203,6 +203,13 @@ textarea:focus {
 	padding-bottom: 0.5rem;
 }
 
+.loading {
+	font-size: 3rem;
+	font-weight: 900;
+	color: #4d4d4d;
+	text-align: center;
+}
+
 @media (prefers-color-scheme: light) {
 	:root {
 		color: #213547;

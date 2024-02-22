@@ -1,6 +1,6 @@
 'use server';
 
-import { db } from '@/db';
+import db from '@/db';
 import bcrytp from 'bcryptjs';
 import { resetPasswordSchema } from '@/lib/types';
 import { TResetPasswordSchema } from '@/lib/types';

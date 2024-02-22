@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-
+import parse from 'html-react-parser';
 import { usePathname } from 'next/navigation';
 import { useReportWebVitals } from 'next/web-vitals';
 import Link from 'next/link';
@@ -52,6 +52,7 @@ const NextBreadcrumb = ({
 					: link;
 				// replace all dashes with spaces
 				itemLink = itemLink.replace(/-/g, ' ');
+				itemLink = itemLink.replace(/%20/g, ' ');
 				// capitalize first letter of each word
 				const itemLinkArray = itemLink.split(' ');
 				itemLink = itemLinkArray

@@ -1,3 +1,5 @@
+'use client';
+
 import create from 'zustand';
 import { Items as Item } from '@/lib/types';
 import { mountStoreDevtool } from 'simple-zustand-devtools';

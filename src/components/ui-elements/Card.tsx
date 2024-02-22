@@ -1,19 +1,32 @@
-import React from 'react';
+import { TProducts } from '@/lib/types';
+import Image from 'next/image';
 
-import classes from './Card.module.css';
+import classes from './card.module.css';
 
-interface Props {
-	className: string;
-	style: React.CSSProperties;
-	children: React.ReactNode;
-}
+type Props = {
+	results: TProducts;
+};
 
-const Card: React.FC<Props> = (props) => {
+const ProductCard = ({ results }: Props) => {
 	return (
-		<div className={`card ${props.className}`} style={props.style}>
-			{props.children}
+		<div className={classes['card-container']}>
+			<div className={classes.card}>
+				<a href={`/categories/products/${results.slug}`}>
+					<Image
+						width={200}
+						height={200}
+						src={`/images/products/${results.image}`}
+						alt={'test'}
+						className={classes['product-image']}
+					/>
+				</a>
+			</div>
+			<p className={classes.title}>{results.title}</p>
+			<p
+				className={classes.price}
+			>{`Starting from ${results.prices[0].price}`}</p>
 		</div>
 	);
 };
 
-export default Card;
+export default ProductCard;

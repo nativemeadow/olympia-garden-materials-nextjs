@@ -99,6 +99,30 @@ export type loginType = {
 	password: string;
 };
 
+export const advancedSearch = z
+	.object({
+		partNumber: z.string().min(1).optional(),
+		nameOrDescription: z.string().min(1).optional(),
+		category: z.string().optional(),
+	})
+	.refine(
+		(data) => {
+			if (data.partNumber) {
+				// If partNumber is not empty, the object is valid
+				return true;
+			} else {
+				// If partNumber is empty, nameOrDescription must not be empty
+				return !!data.nameOrDescription;
+			}
+		},
+		{
+			path: [], // This error belongs to the entire object
+			message: 'When part # is empty, please enter name / Description',
+		}
+	);
+
+export type TAdvancedSearch = z.infer<typeof advancedSearch>;
+
 export type loginResponseType = {
 	errors?: {
 		content?: string[];
@@ -144,17 +168,16 @@ export type Pricing = {
 
 export type Product = {
 	categoryId?: string;
-	categoryUrlKey?: string;
+	// categoryUrlKey?: string;
 	category_slug?: string;
 	id: number;
 	sku: string;
-	// url_key?: string;
 	slug: string;
 	title: string;
 	description: string;
 	image: string;
 	imageLensSize: string;
-	extended: string;
+	extended: ProductExtensions | null;
 	relevance?: number;
 	prices: Pricing[];
 };
@@ -188,6 +211,18 @@ export type Items = {
 	price: number;
 	quantity: number;
 	unit: string | undefined;
+	color?: string | undefined;
+};
+
+export type CartItem = {
+	product_id: number;
+	product_slug: string;
+	sku: string;
+	title: string;
+	image: string;
+	price: number;
+	quantity: number;
+	unit: string;
 	color?: string | undefined;
 };
 
@@ -230,3 +265,58 @@ export type selectListOptions = {
 	coverage_value: number;
 	online_minimum: number;
 };
+
+export type searchResults = {
+	id: string;
+	uuid: string;
+	sku: string;
+	slug: string;
+	title: string;
+	description: string;
+	image: string;
+	image_lens_size: { width: string; height: string };
+	extended: string | null;
+	status: string;
+	created_at: string | null;
+	updated_at: string | null;
+	relevance?: number | undefined;
+	prices: [
+		{
+			title: string;
+			description: string;
+			image: string | null;
+			price: string;
+			size: string;
+			units: string;
+		}
+	];
+	category_product: [
+		{
+			categories: {
+				id: string;
+				title: string;
+				description: string | null;
+			};
+		}
+	];
+};
+
+export type TCatagories = {
+	categoryTitle: string;
+};
+
+export type TPrice = {
+	priceKey: number;
+	priceSku: string;
+	priceTitle: string;
+	priceDescr: string;
+	priceImage: string;
+	price: number;
+	size: string;
+	units: string;
+	coverage: string;
+	coverage_value: number;
+	online_minimum: number;
+};
+
+export type TProducts = Product & TCatagories & TPrice;

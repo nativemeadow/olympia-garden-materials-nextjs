@@ -46,9 +46,6 @@ type Props = {
 const ProductCard = (props: Props) => {
 	const { product, categorySlug } = props;
 	const [error, setError] = useState(false);
-	//const paths = usePathname();
-	//const pathNames = paths?.split('/').filter((path) => path);
-	//const homePath = pathNames?.length > 0 ? pathNames[0] : 'categories';
 
 	return (
 		<div className={classes.card}>

@@ -52,19 +52,6 @@ const ProductPriceLIst = (props: Props) => {
 		// ) :
 		selection = (
 			<div className={classes.detail_quantity_selection}>
-				{/* <input
-					className={classes['quantity_entry']}
-					type='number'
-					min='1'
-					step='any'
-					name='cart_qty'
-					value={productQty.toFixed(2)}
-					onChange={(event) =>
-						setProductQty(parseInt(event.target.value, 10))
-					}
-					disabled={productSize.length <= 0}
-				/> */}
-
 				<NumberInputSpinner
 					disabled={productSize.length <= 0}
 					value={productQty}

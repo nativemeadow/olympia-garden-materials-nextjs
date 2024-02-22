@@ -1,7 +1,7 @@
 'use server';
 
 import type { users } from '@prisma/client';
-import { db } from '@/db';
+import db from '@/db';
 import { z } from 'zod';
 import { userAddressSchema } from '@/lib/types';
 import { TUserAddressSchema } from '@/lib/types';

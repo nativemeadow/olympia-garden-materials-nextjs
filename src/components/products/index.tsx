@@ -15,6 +15,7 @@ import Button from '@/components/form-elements/Button';
 import ProductPriceLIst from './product-price-list';
 import ProductThumbs from './product-thumbs';
 import Calculator from './calculator';
+import { useRouter } from 'next/navigation';
 
 import classes from './product.module.css';
 import styles from './calculator.module.css';
@@ -50,6 +51,7 @@ const ProductDetail = ({ product, sku }: Props) => {
 	const selectedUnitRef = useRef('');
 	const productImageRef = useRef('');
 	const coverageValueRef = useRef(0);
+	const router = useRouter();
 
 	const nodeRef = useRef<HTMLDivElement | null>(null);
 
@@ -227,7 +229,7 @@ const ProductDetail = ({ product, sku }: Props) => {
 		const productJson: Items = {
 			category_id: product?.categoryId,
 			product_id: product?.id,
-			category_slug: product?.categoryUrlKey,
+			category_slug: product?.category_slug,
 			product_slug: product?.slug,
 			// if the product does not have multiple pricing, then the sku comes for the parent product not from pricing
 			sku: productSku ? productSku : product?.sku,
@@ -267,6 +269,7 @@ const ProductDetail = ({ product, sku }: Props) => {
 
 	const viewShoppingCartHandler = () => {
 		setShowAddToCart(false);
+		router.push('/shopping-cart');
 	};
 
 	return (

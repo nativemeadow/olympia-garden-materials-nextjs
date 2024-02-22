@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body className='main'>
+			<body>
 				<Providers>
 					<TopBar />
 					<Header />

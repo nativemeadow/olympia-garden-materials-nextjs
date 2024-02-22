@@ -9,16 +9,20 @@ type Props = {
 };
 
 const ProductExtended = (props: Props) => {
-	const [extended, setExtended] = useState<ProductExtensions[]>(
-		{} as ProductExtensions[]
+	const [extended, setExtended] = useState<ProductExtensions[] | null>(
+		[] || null
 	);
 	const [selected, setSelected] = useState('');
 	const { extendedValue, extendedRules, setExtendedValue, setExtendedRules } =
 		useStore();
-	const extendedInfo = extended[0];
+	const extendedInfo = extended && extended[0];
 
 	useEffect(() => {
-		setExtended(JSON.parse(props.products.extended));
+		if (props.products.extended) {
+			setExtended([props.products.extended]);
+		} else {
+			setExtended(null);
+		}
 	}, [props.products.extended]);
 
 	const updateExtendedHandler = (
@@ -26,7 +30,7 @@ const ProductExtended = (props: Props) => {
 	) => {
 		setSelected(event.target.value);
 		setExtendedValue(event.target.value);
-		setExtendedRules(extendedInfo.rules);
+		extendedInfo && setExtendedRules(extendedInfo.rules);
 	};
 
 	const createExtendedInput = () => {
@@ -34,8 +38,8 @@ const ProductExtended = (props: Props) => {
 			return <></>;
 		}
 
-		console.log(`JSON :`, extendedInfo);
-		console.log('Labels:', extendedInfo.labels);
+		// console.log(`JSON :`, extendedInfo);
+		// console.log('Labels:', extendedInfo.labels);
 
 		return (
 			<select

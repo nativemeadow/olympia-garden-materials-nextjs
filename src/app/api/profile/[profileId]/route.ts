@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '@/db';
+import db from '@/db';
 
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
 	const profileId = req.url?.split('/').pop();

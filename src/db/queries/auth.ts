@@ -1,7 +1,7 @@
 import bcrytp from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import type { users } from '@prisma/client';
-import { db } from '@/db';
+import db from '@/db';
 import RenderFromTemplateContext from 'next/dist/client/components/render-from-template-context';
 
 export const findUserByEmail = async (email: string): Promise<users | null> => {

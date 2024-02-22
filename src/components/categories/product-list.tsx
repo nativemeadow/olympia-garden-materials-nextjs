@@ -18,7 +18,6 @@ const ProductList = ({ categoryProduct, categorySlug }: Props) => {
 	return (
 		<div className={classes.products_grid}>
 			{categoryProduct?.map((item: CategoryProduct, index) => {
-				//console.log('item: ', item.products);
 				return (
 					<div key={index} className={classes.card_width}>
 						<ProductCard

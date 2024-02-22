@@ -1,0 +1,25 @@
+[
+	{
+		"name": "colors",
+		"input": { "type": "select" },
+		"rules": [
+			{
+				"output": {
+					"fields": [
+						{ "field": "sku", "action": "append", "hyphen": true },
+						{ "field": "title", "action": "append", "hyphen": true }
+					]
+				}
+			}
+		],
+		"title": "Glazes",
+		"labels": [
+			"Select Color",
+			"Blue Glaze",
+			"Green Glaze",
+			"Ivory Glaze",
+			"Yellow Glaze"
+		],
+		"values": ["", "blue", "green", "ivory", "yellow"]
+	}
+]
