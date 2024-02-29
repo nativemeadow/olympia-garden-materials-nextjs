@@ -9,8 +9,8 @@ import classes from './cart.module.css';
 const ShoppingCart = () => {
 	const state = useShoppingCart.getState();
 	const [checkoutOption, setCheckOutOption] = useState('not set');
-	// sync the server side and client side rendering for the cart totals
-	// pass setCartTotal to the Cart component where the total is derived
+	// sync the server side and client side rendering for the cart totals.
+	// pass setCartTotal to the Cart component where the total is derived.
 	// fixes: Text content does not match server-rendered HTML
 	const [cartTotal, setCartTotal] = useState(0);
 

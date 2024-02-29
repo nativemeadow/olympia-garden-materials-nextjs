@@ -148,6 +148,25 @@ export type Category = {
 	updated_at: Date | null;
 };
 
+export const categoryUpdate = z.object({
+	title: z.string().min(6),
+	slug: z.string().min(6),
+	description: z
+		.string()
+		.min(6, { message: 'please enter an description for this category' }),
+	image: z
+		.string()
+		.min(1, { message: 'please enter an image for this category' }),
+	is_active: z
+		.string()
+		.min(1, { message: 'please check category status, active or not' }),
+	category_order: z
+		.string()
+		.min(1, { message: 'please select the order of the category' }),
+});
+
+export type TCategoryUpdate = z.infer<typeof categoryUpdate>;
+
 export type CategoryProduct = {
 	products: Product;
 };

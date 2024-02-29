@@ -13,7 +13,7 @@ type Props = {
 	setProductImage: Dispatch<SetStateAction<string | undefined>>;
 	setProductSku: Dispatch<SetStateAction<string>>;
 	setProductOptions: Dispatch<SetStateAction<string>>;
-	setSelectedValue: Dispatch<SetStateAction<string>>;
+	setSelectedPrice: Dispatch<SetStateAction<string>>;
 	productUnit: (units: string) => string;
 	updateSelectedUnit: (unit: string) => void;
 	updateThumbsImage: (unit: string) => void;
@@ -33,7 +33,7 @@ const ProductThumbs = (props: Props) => {
 			props.setSelectedThumb(props.productThumbs[+id].image);
 			props.setProductImage(props.productThumbs[+id].image);
 			props.setProductSku(props.productThumbs[+id].sku);
-			props.setSelectedValue(selectedOption);
+			props.setSelectedPrice(selectedOption);
 			const title = props.productUnit(selectedOption);
 			props.setProductOptions(title);
 			props.updateThumbsImage(props.productThumbs[+id].image);

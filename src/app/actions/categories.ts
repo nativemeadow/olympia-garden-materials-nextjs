@@ -3,6 +3,8 @@
 import db from '@/db';
 import { Category } from '@/lib/types';
 import { parseCustomJson } from '@/lib/custom-json';
+import { TCategoryUpdate } from '@/lib/types';
+import { categoryUpdate } from '@/lib/types';
 
 export const getAll = async (): Promise<Category[]> => {
 	return (await db.categories.findMany({
@@ -21,6 +23,19 @@ export const getTopLevel = async (): Promise<Category[]> => {
 			parent_category: null,
 		},
 	})) as Category[];
+};
+
+export const getById = async (id: string) => {
+	const catId = Number(id);
+	const category = await db.categories.findFirstOrThrow({
+		where: {
+			id: catId,
+		},
+	});
+
+	console.log('Category:', category);
+
+	return category;
 };
 
 export const getBySlug = async (slug: string) => {
@@ -53,4 +68,98 @@ export const getBySlug = async (slug: string) => {
 	const parentCategory = parsedCategories[0];
 
 	return { parsedCategories, parentCategory };
+};
+
+type Categories = {
+	id: number;
+	title: string;
+	slug: string;
+	path: string;
+	children: Category[];
+};
+
+export async function getCategoriesHierarchy() {
+	const categories = await db.$queryRaw`
+	WITH RECURSIVE category_tree AS (
+		SELECT c1.id, c1.title, c1.slug, c1.parent_category, c1.slug AS path
+		FROM categories c1
+		WHERE c1.parent_category IS NULL
+		UNION ALL
+		SELECT c2.id, c2.title, c2.slug, c2.parent_category, CONCAT(ct.path, '/', c2.slug)
+		FROM categories c2
+		INNER JOIN category_tree ct ON c2.parent_category = ct.id
+	)
+	SELECT * FROM category_tree
+	ORDER BY path
+	`;
+	const buildHierarchy = (categories: Categories[], parent: any): any[] => {
+		const result: any[] = [];
+		categories.forEach((category: any) => {
+			if (category.parent_category === parent) {
+				const children = buildHierarchy(categories, category.id);
+				if (children.length) {
+					category.children = children;
+				}
+				result.push(category);
+			}
+		});
+		return result;
+	};
+
+	const result = buildHierarchy(categories, null);
+
+	console.log(result);
+
+	return result;
+}
+// getCategoriesWithSubcategories().then((categories) => console.log(JSON.stringify(categories, null, 2)));
+
+export type CategoryFormState = {
+	errors: {
+		_form?: string[];
+	};
+	success?: boolean;
+};
+
+export const update = async (
+	id: string,
+	formState: TCategoryUpdate
+): Promise<CategoryFormState> => {
+	const { title, description, slug, image, is_active, category_order } =
+		formState;
+
+	const parseResult = categoryUpdate.safeParse(formState);
+	if (!parseResult.success) {
+		// Handle validation error
+		console.error(parseResult.error);
+		return {
+			errors: { _form: parseResult.error.formErrors.formErrors },
+			success: false,
+		};
+	}
+	const categoryId = parseInt(id, 10);
+
+	try {
+		await db.categories.update({
+			where: { id: categoryId },
+			data: {
+				title,
+				description,
+				slug,
+				image,
+				is_active: Boolean(is_active),
+				category_order: parseInt(category_order, 10),
+			},
+		});
+	} catch (error) {
+		return {
+			errors: { _form: ['a bad thing happened'] }, // Fix: Use the correct property name 'errors' instead of '_form'
+			success: false,
+		};
+	}
+
+	return {
+		errors: {},
+		success: true,
+	};
 };

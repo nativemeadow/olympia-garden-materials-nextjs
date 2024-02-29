@@ -35,7 +35,7 @@ const ProductDetail = ({ product, sku }: Props) => {
 	const [productSku, setProductSku] = useState('');
 	const [productOptions, setProductOptions] =
 		useState<string>(productLabelMessage);
-	const [selectedValue, setSelectedValue] = useState(String);
+	const [selectedPrice, setSelectedPrice] = useState(String);
 	const [productSizeMessage, setProductSizeMessage] =
 		useState<string>(productLabelMessage);
 	const [productQty, setProductQty] = useState<number>(1);
@@ -163,7 +163,7 @@ const ProductDetail = ({ product, sku }: Props) => {
 		event: React.ChangeEvent<HTMLSelectElement>
 	) => {
 		const selected = event.target.value;
-		setSelectedValue(selected);
+		setSelectedPrice(selected);
 		const title = productUnit(selected);
 		// set the message describing the product size and price
 		setProductSizeMessage(title);
@@ -320,7 +320,7 @@ const ProductDetail = ({ product, sku }: Props) => {
 						setSelectedThumb={setSelectedThumb}
 						setProductImage={setProductImage}
 						setProductSku={setProductSku}
-						setSelectedValue={setSelectedValue}
+						setSelectedPrice={setSelectedPrice}
 						productUnit={productUnit}
 						setProductOptions={setProductOptions}
 						updateSelectedUnit={updateSelectedUnit}
@@ -337,7 +337,7 @@ const ProductDetail = ({ product, sku }: Props) => {
 						products={product}
 						productSize={productSize}
 						productQty={productQty}
-						selectedValue={selectedValue}
+						setSelectedPrice={selectedPrice}
 						selectList={selectList}
 						productThumbs={productThumbs}
 						productOptions={productSizeMessage}

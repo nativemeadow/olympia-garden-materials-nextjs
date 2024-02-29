@@ -13,7 +13,7 @@ type Props = {
 	products: Product;
 	productSize: string;
 	productQty: number;
-	selectedValue: string;
+	setSelectedPrice: string;
 	selectList: SelectListOptions[];
 	productThumbs: Pricing[] | undefined;
 	productOptions: string;
@@ -27,7 +27,7 @@ const ProductPriceLIst = (props: Props) => {
 		products,
 		productSize,
 		productQty,
-		selectedValue,
+		setSelectedPrice,
 		selectList,
 		productThumbs,
 		productOptions,
@@ -95,7 +95,7 @@ const ProductPriceLIst = (props: Props) => {
 						<select
 							id='product_select'
 							name='product_select'
-							value={selectedValue}
+							value={setSelectedPrice}
 							onChange={productSelectHandler}
 							className={` form-control ${classes['detail_pricing_select']} form-select `}
 							disabled={
@@ -121,7 +121,7 @@ const ProductPriceLIst = (props: Props) => {
 					<input
 						type='hidden'
 						name='product_select'
-						value={selectedValue}
+						value={setSelectedPrice}
 					/>
 				)}
 			</div>

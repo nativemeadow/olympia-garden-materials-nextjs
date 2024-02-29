@@ -65,7 +65,11 @@ const NextBreadcrumb = ({
 				return (
 					<React.Fragment key={index}>
 						<li className={itemClasses}>
-							<Link href={href}>{itemLink}</Link>
+							{index === pathNames.length - 1 ? (
+								itemLink
+							) : (
+								<Link href={href}>{itemLink}</Link>
+							)}
 						</li>
 						{pathNames.length !== index + 1 && separator}
 					</React.Fragment>

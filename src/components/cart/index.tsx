@@ -37,19 +37,12 @@ const ShoppingCart = (props: Props) => {
 		}
 		getCartItems();
 
+		setCartTotal(state.cartTotal());
+
 		return () => {
 			ignore = true;
 		};
-	}, [state.Items]);
-
-	const totals = state
-		.showCart()
-		.reduce(
-			(accumulator, item) => accumulator + item.price * item.quantity,
-			0
-		);
-
-	setCartTotal(totals);
+	}, [setCartTotal, state]);
 
 	if (!listItems) {
 		return <p>Loading Cart.....</p>;

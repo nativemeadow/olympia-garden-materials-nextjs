@@ -22,6 +22,11 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
+			{/* <script
+				async
+				src='https://cdn.tiny.cloud/1/rwkayo3b59qnedantqw0om73dqwpiuqicaxgz08kgqxkvgfn/tinymce/6/tinymce.min.js'
+				referrerPolicy='origin'
+			/> */}
 			<body>
 				<Providers>
 					<TopBar />
