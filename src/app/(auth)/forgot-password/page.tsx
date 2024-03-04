@@ -3,25 +3,20 @@
 import React, { useState, useRef } from 'react';
 import Link from 'next/navigation';
 
-import { FieldValues, useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { forgotPasswordSchema } from '@/lib/types';
 import type { TForgotPasswordSchema } from '@/lib/types';
 import * as actions from '../../actions/changePassword';
 import { useSession } from 'next-auth/react';
 
-import { errorDataType } from '@/utils/error-types';
-
 import classes from '../login/LoginForm.module.css';
-import next from 'next';
 
 const ForgotPasswordPage = () => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-		reset,
-		getValues,
 	} = useForm<TForgotPasswordSchema>({
 		resolver: zodResolver(forgotPasswordSchema),
 	});

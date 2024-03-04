@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import CategoriesPage from './categories/page';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { authOptions } from './api/auth/[...nextauth]/options';
 
 import Users from './users/page';
 import { getServerSession } from 'next-auth';

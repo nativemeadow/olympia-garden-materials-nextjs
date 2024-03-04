@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { rule } from '@/lib/types';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 

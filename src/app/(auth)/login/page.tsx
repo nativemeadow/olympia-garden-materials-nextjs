@@ -1,27 +1,41 @@
 'use client';
-
+import { useEffect } from 'react';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSession } from 'next-auth/react';
+import { userType } from '@/lib/types';
 
 import { loginSchema } from '@/lib/types';
 import type { TLoginSchema } from '@/lib/types';
 
 import classes from './LoginForm.module.css';
 
-const LoginFormPage = () => {
+type Props = {
+	searchParams?: Record<'callbackUrl' | 'error', string>;
+};
+
+const LoginFormPage = (props: Props) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-		reset,
-		getValues,
 	} = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
+	const router = useRouter();
+	const { data: session } = useSession();
+	const user: userType = session?.user || { name: '', email: '', id: '' };
+
+	useEffect(() => {
+		if (session) {
+			router.push('/');
+		}
+	}, [session, router]);
 
 	const onSubmit = async (data: TLoginSchema) => {
 		console.log('data: ', data);
-		//let user: any = null;
+
 		signIn('credentials', {
 			email: data.email,
 			password: data.password,
@@ -35,6 +49,13 @@ const LoginFormPage = () => {
 				<form method='post' onSubmit={handleSubmit(onSubmit)}>
 					<div className={classes['login-wrapper']}>
 						<div className={'flex flex-col w-full'}>
+							{props.searchParams?.error && (
+								<div>
+									<p className='bg-red-100 text-red-600 text-center p-2'>
+										Login Failed
+									</p>
+								</div>
+							)}
 							<div className=''>
 								<label
 									className={`${classes['form-field-label']} ${classes['label']}`}

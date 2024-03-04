@@ -1,4 +1,4 @@
-import create, { GetState, SetState } from 'zustand';
+import { create } from 'zustand';
 import { Items } from '@/lib/items';
 import { initialAddressInfo, manualAddress } from '@/lib/customerInfo';
 import { Store } from './orderType';

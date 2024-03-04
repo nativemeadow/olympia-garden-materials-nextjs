@@ -1,5 +1,6 @@
 import React, { LegacyRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+//import Editor from '@/components/BundledEditor';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 type EditorProps = {

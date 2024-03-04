@@ -1,16 +1,23 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
 import { registerSchema } from '@/lib/types';
 import type { TRegisterSchema } from '@/lib/types';
+import { useSession } from 'next-auth/react';
+import { userType } from '@/lib/types';
 
 import classes from './Register.module.css';
 
-const RegisterPage = () => {
+type Props = {
+	searchParams?: Record<'callbackUrl' | 'error', string>;
+};
+
+const RegisterPage = (props: Props) => {
 	const {
 		register,
 		handleSubmit,
@@ -18,6 +25,15 @@ const RegisterPage = () => {
 		reset,
 		getValues,
 	} = useForm<TRegisterSchema>({ resolver: zodResolver(registerSchema) });
+	const router = useRouter();
+	const { data: session } = useSession();
+	const user: userType = session?.user || { name: '', email: '', id: '' };
+
+	useEffect(() => {
+		if (session) {
+			router.push('/profile');
+		}
+	}, [session, router]);
 
 	const onSubmit = async (data: TRegisterSchema) => {
 		console.log('data: ', data);
@@ -37,6 +53,15 @@ const RegisterPage = () => {
 				<form method='post' onSubmit={handleSubmit(onSubmit)}>
 					<div className={classes['register-wrapper']}>
 						<div className={'flex flex-col w-full'}>
+							{props.searchParams?.error && (
+								<div className=''>
+									<div>
+										<p className='bg-red-100 text-red-600 text-center p-2'>
+											Login Failed
+										</p>
+									</div>
+								</div>
+							)}
 							<div className=''>
 								<label
 									className={`${classes['form-field-label']} ${classes.label}`}

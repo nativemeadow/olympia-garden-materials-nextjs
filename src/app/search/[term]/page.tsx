@@ -35,6 +35,10 @@ const SearchPage = ({ params }: Props) => {
 	// };
 
 	const searchProd = async (term: string) => {
+		if (term.trim().length === 0) {
+			setError('Unable to complete the search.');
+			return;
+		}
 		const searchResult = await searchProducts(term);
 		if (
 			Array.isArray(searchResult) &&

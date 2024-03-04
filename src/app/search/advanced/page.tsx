@@ -1,10 +1,13 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AdvanceSearchPage = () => {
 	const router = useRouter();
-	router.push(`/search`);
+
+	useEffect(() => {
+		router.push(`/search`);
+	}, []);
 
 	return <div>Advanced Search page</div>;
 };

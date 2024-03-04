@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function GET(req: NextApiRequest, res: NextApiResponse) {
+export function GET(req: NextRequest, res: NextResponse) {
 	console.log(typeof res); // Should log 'object'
 	console.log(res); // Should log the res object
 

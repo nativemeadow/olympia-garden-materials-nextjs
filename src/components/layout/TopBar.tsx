@@ -28,16 +28,15 @@ const TopBar = () => {
 		<div className={classes['top-bar']}>
 			<div className={classes['container']}>
 				<ul className={classes['top-bar-items']}>
-					{/* <li className={classes['top-bar-item']}>
-						{!session && <Link href={`/login`}> login</Link>}
-						{session && (
-							<Link href={`/loggedout`} onClick={() => signOut()}>
-								Sign Out
-							</Link>
-						)}
-					</li> */}
 					<li className={classes['top-bar-item']}>
-						{!session && <Link href={`/login`}>Account Login</Link>}
+						{!session && (
+							<Dropdown user={`Login`}>
+								<Link href={`/login`}>Account Login</Link>
+								<Link href={`/register`}>
+									Create Your Account
+								</Link>
+							</Dropdown>
+						)}
 						{session && (
 							<Dropdown user={`Hi ${session.user?.name}`}>
 								<Link href={`/profile`}>Profile</Link>

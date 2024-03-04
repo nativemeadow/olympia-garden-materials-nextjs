@@ -87,7 +87,7 @@ export const getSearchCount = (): number => {
 };
 
 export const search = async (
-	searchTerm: '',
+	searchTerm: string,
 	partNumber?: '',
 	category?: '',
 	sorted: string = ' order by `relevance`+0 DESC',

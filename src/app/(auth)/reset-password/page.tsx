@@ -13,11 +13,7 @@ import type { userType } from '@/lib/types';
 
 import classes from '../login/LoginForm.module.css';
 
-interface Props {
-	token: string;
-}
-
-const RestPasswordPage = ({ token }: Props) => {
+const RestPasswordPage = () => {
 	const {
 		register,
 		handleSubmit,

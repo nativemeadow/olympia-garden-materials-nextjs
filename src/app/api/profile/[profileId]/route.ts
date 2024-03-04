@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import db from '@/db';
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
 	const profileId = req.url?.split('/').pop();
 	const userId = parseInt(profileId!, 10);
 	console.log('input profileId:', profileId);

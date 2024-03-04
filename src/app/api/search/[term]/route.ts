@@ -1,10 +1,10 @@
 'use server';
 
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import db from '@/db';
 import { bigIntToString } from '@/lib/bigIntToString';
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
 	const terms = req.url?.split('/').pop();
 	const searchTerms = terms as string;
 	console.log('Term:', searchTerms);
