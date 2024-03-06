@@ -115,7 +115,7 @@ export const authOptions: NextAuthOptions = {
 					},
 				};
 			}
-			console.log('Session Callback', { session });
+			//console.log('Session Callback', { session });
 			return session;
 		},
 		jwt: async ({ token, user }) => {
@@ -129,7 +129,7 @@ export const authOptions: NextAuthOptions = {
 					uuid: userSignIn.uuid,
 				};
 			}
-			console.log('JWT Callback', { token });
+			//console.log('JWT Callback', { token });
 			return token;
 		},
 	},

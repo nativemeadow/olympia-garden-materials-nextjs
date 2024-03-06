@@ -1,3 +1,5 @@
+'use server';
+
 import db from '@/db';
 import { parseCustomJson } from '@/lib/custom-json';
 import { Product } from '@/lib/types';

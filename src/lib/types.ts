@@ -148,15 +148,23 @@ export type Category = {
 	updated_at: Date | null;
 };
 
+const FileSchema = z.object({
+	name: z.string(),
+	type: z.string(),
+	size: z.number(),
+});
+
+const FormSchema = z.object({
+	file: FileSchema.optional(),
+});
+
 export const categoryUpdate = z.object({
-	title: z.string().min(6),
+	title: z.string().min(2),
 	slug: z.string().min(6),
 	description: z
 		.string()
 		.min(6, { message: 'please enter an description for this category' }),
-	image: z
-		.string()
-		.min(1, { message: 'please enter an image for this category' }),
+	image: z.string().min(6, { message: 'please enter image' }),
 	is_active: z
 		.string()
 		.min(1, { message: 'please check category status, active or not' }),

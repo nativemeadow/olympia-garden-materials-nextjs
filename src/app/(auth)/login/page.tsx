@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSession } from 'next-auth/react';
-import { userType } from '@/lib/types';
 
 import { loginSchema } from '@/lib/types';
 import type { TLoginSchema } from '@/lib/types';
@@ -23,15 +21,6 @@ const LoginFormPage = (props: Props) => {
 		handleSubmit,
 		formState: { errors, isSubmitting },
 	} = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
-	const router = useRouter();
-	const { data: session } = useSession();
-	const user: userType = session?.user || { name: '', email: '', id: '' };
-
-	useEffect(() => {
-		if (session) {
-			router.push('/');
-		}
-	}, [session, router]);
 
 	const onSubmit = async (data: TLoginSchema) => {
 		console.log('data: ', data);

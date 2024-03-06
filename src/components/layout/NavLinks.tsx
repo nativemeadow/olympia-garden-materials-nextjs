@@ -11,7 +11,7 @@ const NavLinks = () => {
 	return (
 		<ul className={classes['main-nav-items']}>
 			{MainNavData().map((data: NavData, index: number) => {
-				console.log('pathname:', pathname, 'route:', data.route);
+				//console.log('pathname:', pathname, 'route:', data.route);
 				return (
 					<li key={index} className={classes['main-nav-item']}>
 						<Link
