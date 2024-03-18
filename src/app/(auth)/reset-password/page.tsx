@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { changeUserPassword } from '@/app/actions';
+
 import { useSession } from 'next-auth/react';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -20,6 +21,7 @@ const RestPasswordPage = () => {
 		formState: { errors, isSubmitting },
 		getValues,
 		setError,
+		reset,
 	} = useForm<TResetPasswordSchema>({
 		resolver: zodResolver(resetPasswordSchema),
 	});
@@ -55,7 +57,8 @@ const RestPasswordPage = () => {
 					new FormData()
 				);
 				if (result.success) {
-					setSuccessMessage('Your Address Updated');
+					setSuccessMessage('Your password has been reset.');
+					reset();
 					setTimeout(() => {
 						setSuccessMessage('');
 					}, 10000);

@@ -17,11 +17,17 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.redirect(new URL('/profile', request.url));
 	}
 
+	if (!cookieValue && request.nextUrl.pathname === '/profile') {
+		console.log(`Value of ${cookieName} cookie:`, cookieValue);
+		return NextResponse.redirect(new URL('/login', request.url));
+	}
+
 	if (
 		!cookieValue &&
 		(request.nextUrl.pathname === '/admin' ||
 			request.nextUrl.pathname === '/admin/dashboard' ||
 			request.nextUrl.pathname === '/admin/dashboard/categories' ||
+			request.nextUrl.pathname === '/admin/dashboard/categories/edit' ||
 			request.nextUrl.pathname === '/admin/dashboard/products')
 	) {
 		return NextResponse.redirect(new URL('/login', request.url));
@@ -34,15 +40,10 @@ export const config = {
 	matcher: [
 		'/login',
 		'/register',
+		'/profile',
 		'/admin/',
 		'/admin/dashboard',
-		'/admin/dashboard/categories',
-		'/admin/dashboard/products',
-		'/admin/dashboard/users',
-		'/admin/dashboard/orders',
-		'/admin/dashboard/reviews',
-		'/admin/dashboard/settings',
-		'/admin/dashboard/notifications',
-		'/admin/dashboard/transactions',
+		'/admin/dashboard/(.*)',
+		'/admin/dashboard/(.*)/:path?',
 	],
 };

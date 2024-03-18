@@ -28,6 +28,7 @@ const LoginFormPage = (props: Props) => {
 		signIn('credentials', {
 			email: data.email,
 			password: data.password,
+			remember_me: data.remember_me,
 			callbackUrl: '/',
 		});
 	};
@@ -67,7 +68,7 @@ const LoginFormPage = (props: Props) => {
 							</div>
 							<div className=''>
 								<label
-									className={`${classes['form-field-label']} ${classes['abel']}`}
+									className={`${classes['form-field-label']} ${classes['label']}`}
 									htmlFor='password'
 								>
 									Password:
@@ -84,6 +85,15 @@ const LoginFormPage = (props: Props) => {
 										className={classes.error}
 									>{`${errors.password.message}`}</p>
 								)}
+							</div>
+							<div className='inline-flex'>
+								<label htmlFor='remember-me'>Remember Me</label>
+								<input
+									className={`${classes['checkbox']}`}
+									type='checkbox'
+									{...register('remember_me')}
+									id='remember-me'
+								/>
 							</div>
 
 							<div className=''>

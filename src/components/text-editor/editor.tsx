@@ -1,21 +1,18 @@
 import React, { LegacyRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-//import Editor from '@/components/BundledEditor';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 type EditorProps = {
-	apiKey: string;
 	id: string;
 	initialValue: string;
 	handleEditorChange: (content: string, editor: any) => void;
 	register: Omit<UseFormRegisterReturn, 'ref'>;
 };
 
+const apiKey = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+
 const EditorComponent = React.forwardRef(
-	(
-		{ apiKey, id, initialValue, handleEditorChange, register }: EditorProps,
-		ref
-	) => (
+	({ id, initialValue, handleEditorChange, register }: EditorProps, ref) => (
 		<Editor
 			apiKey={apiKey}
 			ref={ref as LegacyRef<Editor> | undefined}

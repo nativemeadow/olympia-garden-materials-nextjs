@@ -35,6 +35,16 @@ const NextBreadcrumb = ({
 		pathNames[0] = 'categories';
 	}
 
+	if (pathNames && pathNames[0] === 'forgot-password') {
+		return (
+			<ul className={containerClasses}>
+				<li className={listClasses}>
+					<Link href={'/'}>{homeElement}</Link>
+				</li>
+			</ul>
+		);
+	}
+
 	return (
 		<ul className={containerClasses}>
 			<li className={listClasses}>

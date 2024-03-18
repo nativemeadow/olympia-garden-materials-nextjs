@@ -145,7 +145,6 @@ const EditPage = () => {
 										Description:
 									</label>
 									<EditorComponent
-										apiKey='rwkayo3b59qnedantqw0om73dqwpiuqicaxgz08kgqxkvgfn'
 										id='description'
 										initialValue={
 											category?.description || ''

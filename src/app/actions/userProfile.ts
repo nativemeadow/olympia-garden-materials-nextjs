@@ -15,9 +15,7 @@ export type UserAddressFormState = {
 
 export const updateUserAddress = async (
 	id: string,
-	uuid: string,
-	formState: TUserAddressSchema,
-	formData: FormData
+	formState: TUserAddressSchema
 ): Promise<UserAddressFormState> => {
 	console.log('updateUserAddress', id, formState);
 	const { phone, address, city, stateProvince, postalCode } = formState;

@@ -1,17 +1,12 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { cookies } from 'next/headers';
 import bcrytp from 'bcryptjs';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import type { users } from '@prisma/client';
 
 import db from '@/db';
-
-type extendedToken = {
-	id: string;
-	uuid: string;
-	email: string;
-};
 
 export const authOptions: NextAuthOptions = {
 	session: {
@@ -36,6 +31,7 @@ export const authOptions: NextAuthOptions = {
 					label: 'Confirm Password',
 					type: 'password',
 				},
+				remember_me: { label: 'Remember Me', type: 'checkbox' },
 			},
 			async authorize(credentials, req) {
 				if (!credentials?.email || !credentials?.password) {
@@ -53,9 +49,6 @@ export const authOptions: NextAuthOptions = {
 						10
 					);
 					const resetToken = crypto.randomBytes(35).toString('hex');
-					const refresh_token = crypto
-						.randomBytes(35)
-						.toString('hex');
 					user = await db.users.create({
 						data: {
 							uuid: uuidv4(),
@@ -63,7 +56,6 @@ export const authOptions: NextAuthOptions = {
 							password: hashedPassword,
 							name: credentials.name,
 							reset_token: resetToken,
-							refresh_token,
 							created_at: new Date(),
 							// Add other necessary fields here
 						},
@@ -77,34 +69,21 @@ export const authOptions: NextAuthOptions = {
 					if (!isMatch) {
 						return null;
 					}
-
-					const refresh_token = crypto
-						.randomBytes(35)
-						.toString('hex');
-
-					user = await db.users.update({
-						where: {
-							email: credentials.email,
-						},
-						data: {
-							refresh_token: refresh_token, // Replace 'new_refresh_token' with the actual value
-						},
-					});
 				}
+
 				return {
 					id: user.id + '',
 					uuid: user.uuid,
 					name: user.name,
 					email: user.email,
+					remember_me: credentials.remember_me ? true : false,
 					resetToken: user.reset_token,
-					token: user.refresh_token,
 				};
 			},
 		}),
 	],
 	callbacks: {
 		session: async ({ session, token }) => {
-			let userSession;
 			if (token && token.sub && typeof token.uuid === 'string') {
 				session = {
 					...session,
@@ -119,8 +98,12 @@ export const authOptions: NextAuthOptions = {
 			return session;
 		},
 		jwt: async ({ token, user }) => {
-			const userSignIn = user as unknown as users;
+			const userSignIn = user as users;
 			if (user) {
+				console.log('User remember', userSignIn);
+				token.maxAge = userSignIn.remember_me
+					? 7 * 24 * 60 * 60
+					: 60 * 60; // 1 week or 1 hour
 				// user is in the session callback (above) is set here in the JWT callback
 				token.user = userSignIn;
 				return {
@@ -138,3 +121,7 @@ export const authOptions: NextAuthOptions = {
 		newUser: '/register',
 	},
 };
+
+//function refreshAccessToken() {
+// Function to refresh access token
+//}

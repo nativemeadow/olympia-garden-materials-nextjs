@@ -5,3 +5,8 @@ export { getAll as allCategories } from './categories';
 export { getBySlug as getCategoryBySlug } from './categories';
 
 export { getBySlug as getProductBySlug } from './products';
+
+export { forgotPassword } from './forgotPassword';
+
+export { verifyResetToken } from './forgotPassword';
+export { resetPassword } from './resetPassword';

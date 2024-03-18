@@ -3,6 +3,7 @@ import z from 'zod';
 export const loginSchema = z.object({
 	email: z.string().email(),
 	password: z.string().max(100),
+	remember_me: z.boolean().optional(),
 });
 
 export type TLoginSchema = z.infer<typeof loginSchema>;
@@ -58,6 +59,29 @@ export const resetPasswordSchema = z
 	});
 
 export type TResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
+
+export const resetForgotPasswordSchema = z
+	.object({
+		newPassword: z
+			.string()
+			.min(6, {
+				message: 'new password required, must be at least 6 character',
+			})
+			.max(100),
+
+		confirmPassword: z
+			.string()
+			.min(6, { message: 'confirm your new password' })
+			.max(100),
+	})
+	.refine((data) => data.newPassword === data.confirmPassword, {
+		message: `Passwords don't match`,
+		path: ['confirmPassword'],
+	});
+
+export type TResetForgotPasswordSchema = z.infer<
+	typeof resetForgotPasswordSchema
+>;
 
 export const addressSchema = z.object({
 	phone: z
