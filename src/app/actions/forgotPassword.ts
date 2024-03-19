@@ -2,6 +2,7 @@
 
 import db from '@/db';
 import jwt from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
 import bcrytp from 'bcryptjs';
 import { forgotPassword as forgot } from '@/lib/templates/forgot-password';
 import { sendMail, compileTemplate } from '@/components/email/email-sender';
@@ -38,7 +39,7 @@ export const forgotPassword = async (email: string) => {
 	});
 
 	// Send email with link to reset password
-	const resetUrl = `${process.env.NEXTAUTH_URL}/forgot-password/${resetToken}/${user.email}`;
+	const resetUrl = `${process.env.NEXTAUTH_URL}/forgot-password/${resetToken}`;
 	const resetLinkName = 'Reset Password Here';
 
 	// Send email
@@ -55,11 +56,26 @@ export const forgotPassword = async (email: string) => {
 	};
 };
 
-export const verifyResetToken = async (email: string, token: string) => {
+export const verifyResetToken = async (token: string) => {
 	console.log('Verifying token', token);
-	console.log('Verifying email', email);
+
+	let decoded: any;
+	// Decode token
+	try {
+		decoded = jwtDecode(token);
+		console.log('Decoded:', decoded);
+	} catch (error) {
+		console.error('Error verifying token:', error);
+		return {
+			success: false,
+			message: 'Error verifying token',
+		};
+	}
+
+	console.log('email decoded:', decoded.email);
+
 	const user = await db.users.findUnique({
-		where: { email },
+		where: { email: decoded.email },
 	});
 
 	if (!user) {

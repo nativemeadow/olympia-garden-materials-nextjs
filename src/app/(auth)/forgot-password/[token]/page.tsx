@@ -12,7 +12,7 @@ import { verifyResetToken } from '@/app/actions';
 import { resetPassword } from '@/app/actions/';
 import ResetPassword from '@/components/change-password/reset-success';
 
-import classes from '../../../login/LoginForm.module.css';
+import classes from '../../login/LoginForm.module.css';
 
 const ResetForgotPassword = () => {
 	const {
@@ -24,18 +24,16 @@ const ResetForgotPassword = () => {
 		resolver: zodResolver(resetForgotPasswordSchema),
 	});
 	const [token, setToken] = useState('');
-	const [email, setEmail] = useState('');
 	const [tokenVerified, setTokenVerified] = useState(true);
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
 		const pathSegments = window.location.pathname.split('/');
-		const [token, email] = pathSegments.slice(-2);
+		const token = pathSegments.pop() as string;
 		setToken(token);
-		setEmail(email);
 		const verifyToken = async () => {
 			try {
-				const response = await verifyResetToken(email, token);
+				const response = await verifyResetToken(token);
 				if (response.success) {
 					setTokenVerified(true);
 				} else {
@@ -51,10 +49,9 @@ const ResetForgotPassword = () => {
 	}, []);
 
 	const onSubmit = async (data: TResetForgotPasswordSchema) => {
-		console.log('Form data:', data, 'Token:', token, 'Email:', email);
+		console.log('Form data:', data, 'Token:', token);
 		try {
 			const response = await resetPassword(
-				email,
 				data.newPassword,
 				data.confirmPassword,
 				token

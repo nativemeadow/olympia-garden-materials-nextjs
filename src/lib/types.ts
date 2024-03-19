@@ -203,6 +203,18 @@ export type CategoryProduct = {
 	products: Product;
 };
 
+export const contactUsSchema = z.object({
+	name: z.string().min(3, { message: 'please enter you name.' }),
+	email: z.string().email({ message: 'email does not appear to be valid' }),
+	phone: z
+		.string()
+		.min(10, { message: 'please enter a 10 digit phone number' }),
+	subject: z.string().min(3, { message: 'please enter a subject' }),
+	message: z.string().min(10, { message: 'please enter a message' }),
+});
+
+export type TContactUsSchema = z.infer<typeof contactUsSchema>;
+
 export type Pricing = {
 	key: number;
 	sku: string;

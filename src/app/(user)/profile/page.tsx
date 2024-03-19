@@ -62,9 +62,7 @@ const ProfilePage = () => {
 			try {
 				const result = await actions.updateUserAddress(
 					user.id,
-					user.uuid,
-					formState,
-					new FormData()
+					formState
 				);
 
 				console.log('update result: ', result);

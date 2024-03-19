@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextIndex", "fullTextIndex"]
+  previewFeatures = ["fullTextIndex"]
 }
 
 datasource db {
@@ -23,7 +23,7 @@ model cart_items {
   image         String?    @db.VarChar(300)
   unit          String?    @db.Text
   color         String?    @db.VarChar(50)
-  created_at    DateTime?  @db.Timestamp(0)
+  created_at    DateTime?  @default(now()) @db.Timestamp(0)
   updated_at    DateTime?  @db.Timestamp(0)
   carts         carts      @relation(fields: [cart_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_items_cart_id_foreign")
   categories    categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_items_category_id_foreign")
@@ -38,7 +38,7 @@ model carts {
   id         BigInt       @id @default(autoincrement()) @db.UnsignedBigInt
   uuid       String?      @unique(map: "uuid") @db.VarChar(255)
   user_id    BigInt       @db.UnsignedBigInt
-  created_at DateTime?    @db.Timestamp(0)
+  created_at DateTime?    @default(now()) @db.Timestamp(0)
   updated_at DateTime?    @db.Timestamp(0)
   cart_items cart_items[]
   users      users        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "carts_user_id_foreign")
@@ -57,7 +57,7 @@ model categories {
   is_active                                                              Boolean               @default(true)
   category_order                                                         BigInt                @default(0) @db.UnsignedBigInt
   parent_category                                                        BigInt?               @db.UnsignedBigInt
-  created_at                                                             DateTime?             @db.Timestamp(0)
+  created_at                                                             DateTime?             @default(now()) @db.Timestamp(0)
   updated_at                                                             DateTime?             @db.Timestamp(0)
   cart_items                                                             cart_items[]
   categories                                                             categories?           @relation("categoriesTocategories", fields: [parent_category], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categories_parent_category_foreign")
@@ -159,7 +159,7 @@ model prices {
   coverage_value Decimal?  @db.Decimal(10, 2)
   online_minimum Decimal?  @db.Decimal(10, 2)
   product_id     BigInt?   @db.UnsignedBigInt
-  created_at     DateTime? @db.Timestamp(0)
+  created_at     DateTime? @default(now()) @db.Timestamp(0)
   updated_at     DateTime? @db.Timestamp(0)
   products       products? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "prices_product_foreign")
 
@@ -178,7 +178,7 @@ model products {
   image_lens_size  Json?
   extended         Json?
   status           String             @default("Active") @db.VarChar(20)
-  created_at       DateTime?          @db.Timestamp(0)
+  created_at       DateTime?          @default(now()) @db.Timestamp(0)
   updated_at       DateTime?          @db.Timestamp(0)
   cart_items       cart_items[]
   category_product category_product[]
@@ -193,7 +193,7 @@ model user_phone {
   uuid         String?         @unique(map: "user_phone_uuid_unique") @db.VarChar(255)
   phone_number String          @db.VarChar(255)
   user_id      BigInt          @db.UnsignedBigInt
-  created_at   DateTime?       @db.Timestamp(0)
+  created_at   DateTime?       @default(now()) @db.Timestamp(0)
   updated_at   DateTime?       @db.Timestamp(0)
   users        users?          @relation(fields: [uuid], references: [uuid], onDelete: Cascade, map: "users_uuid")
 
@@ -281,6 +281,29 @@ model orders {
 
   @@index([user_id], map: "user-order")
   @@index([address_id], map: "user_address_id")
+}
+
+model contact_us {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  email      String?  @db.VarChar(30)
+  name       String?  @db.VarChar(100)
+  phone      String?  @db.VarChar(20)
+  subject    String?  @db.Text
+  comment    String?  @db.Text
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @db.DateTime(0)
+
+  @@index([email], map: "email_idx")
+}
+
+model media {
+  id         Int      @id @default(autoincrement())
+  UUID       String   @db.VarChar(255)
+  type       String   @db.VarChar(30)
+  image      String   @db.VarChar(100)
+  comment    String   @db.Text
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @db.Timestamp(0)
 }
 
 enum user_phone_type {
