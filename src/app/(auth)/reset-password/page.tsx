@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordSchema } from '@/lib/types';
 import type { TResetPasswordSchema } from '@/lib/types';
 import type { userType } from '@/lib/types';
+import { KeyIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/16/solid';
 
 import classes from '../login/LoginForm.module.css';
 
@@ -34,6 +35,13 @@ const RestPasswordPage = () => {
 	};
 	const [successMessage, setSuccessMessage] = useState('');
 	const formRef = useRef(null);
+	const [isVisiblePass, setIsVisiblePass] = useState(false);
+	const toggleVisiblePass = () => setIsVisiblePass((prev) => !prev);
+	const [isVisibleNewPass, setIsVisibleNewPass] = useState(false);
+	const toggleVisibleNewPass = () => setIsVisibleNewPass((prev) => !prev);
+	const [isVisibleConfirmPass, setIsVisibleConfirmPass] = useState(false);
+	const toggleVisibleConfirmPass = () =>
+		setIsVisibleConfirmPass((prev) => !prev);
 
 	const onInvalid = (errors: any) => console.error(errors);
 
@@ -102,17 +110,33 @@ const RestPasswordPage = () => {
 								>
 									Current Password:
 								</label>
-								<input
-									className={`${classes['form-field']} ${classes['password']}`}
-									id='oldPassword'
-									type='password'
-									placeholder='Current Password'
-									required
-									{...register('oldPassword', {
-										required:
-											'Current Password is required',
-									})}
-								/>
+								<div className='relative'>
+									<KeyIcon className='absolute left-2 top-1/2 transform -translate-y-1/2 h-6 w-6' />
+									{isVisiblePass ? (
+										<EyeIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() => toggleVisiblePass()}
+										/>
+									) : (
+										<EyeSlashIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() => toggleVisiblePass()}
+										/>
+									)}
+									<input
+										className={`${classes['form-field']} ${classes['password']}`}
+										id='oldPassword'
+										type={
+											isVisiblePass ? 'text' : 'password'
+										}
+										style={{ paddingLeft: '35px' }}
+										required
+										{...register('oldPassword', {
+											required:
+												'Current Password is required',
+										})}
+									/>
+								</div>
 								{errors.oldPassword && (
 									<p
 										className={classes.error}
@@ -126,21 +150,43 @@ const RestPasswordPage = () => {
 								>
 									New Password:
 								</label>
-								<input
-									className={`${classes['form-field']} ${classes['password']}`}
-									id='password'
-									type='password'
-									placeholder='Password'
-									required
-									{...register('password', {
-										required: 'Password is required',
-										minLength: {
-											value: 6,
-											message:
-												'Password must be at least 6 characters long',
-										},
-									})}
-								/>
+								<div className='relative'>
+									<KeyIcon className='absolute left-2 top-1/2 transform -translate-y-1/2 h-6 w-6' />
+									{isVisibleNewPass ? (
+										<EyeIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() =>
+												toggleVisibleNewPass()
+											}
+										/>
+									) : (
+										<EyeSlashIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() =>
+												toggleVisibleNewPass()
+											}
+										/>
+									)}
+									<input
+										className={`${classes['form-field']} ${classes['password']}`}
+										id='password'
+										type={
+											isVisibleNewPass
+												? 'text'
+												: 'password'
+										}
+										style={{ paddingLeft: '35px' }}
+										required
+										{...register('password', {
+											required: 'Password is required',
+											minLength: {
+												value: 6,
+												message:
+													'Password must be at least 6 characters long',
+											},
+										})}
+									/>
+								</div>
 								{errors.password && (
 									<p
 										className={classes.error}
@@ -154,24 +200,47 @@ const RestPasswordPage = () => {
 								>
 									Confirm Password:
 								</label>
-								<input
-									className={`${classes['form-field']} ${classes['password']}`}
-									id='confirmPassword'
-									type='password'
-									placeholder='Confirm Password'
-									required
-									{...register('confirmPassword', {
-										required:
-											'Password confirmation is required',
-										validate: (value) => {
-											const { password } = getValues();
-											return (
-												password === value ||
-												'Passwords must match'
-											);
-										},
-									})}
-								/>
+								<div className='relative'>
+									<KeyIcon className='absolute left-2 top-1/2 transform -translate-y-1/2 h-6 w-6' />
+									{isVisibleConfirmPass ? (
+										<EyeIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() =>
+												toggleVisibleConfirmPass()
+											}
+										/>
+									) : (
+										<EyeSlashIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() =>
+												toggleVisibleConfirmPass()
+											}
+										/>
+									)}
+									<input
+										className={`${classes['form-field']} ${classes['password']}`}
+										id='confirmPassword'
+										type={
+											isVisibleConfirmPass
+												? 'text'
+												: 'password'
+										}
+										style={{ paddingLeft: '35px' }}
+										required
+										{...register('confirmPassword', {
+											required:
+												'Password confirmation is required',
+											validate: (value) => {
+												const { password } =
+													getValues();
+												return (
+													password === value ||
+													'Passwords must match'
+												);
+											},
+										})}
+									/>
+								</div>
 								{errors.confirmPassword && (
 									<p
 										className={classes.error}

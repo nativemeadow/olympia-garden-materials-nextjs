@@ -1,10 +1,16 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+	EnvelopeIcon,
+	KeyIcon,
+	EyeIcon,
+	EyeSlashIcon,
+} from '@heroicons/react/16/solid';
 
 import { loginSchema } from '@/lib/types';
 import type { TLoginSchema } from '@/lib/types';
@@ -21,6 +27,8 @@ const LoginFormPage = (props: Props) => {
 		handleSubmit,
 		formState: { errors, isSubmitting },
 	} = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
+	const [isVisiblePass, setIsVisiblePass] = useState(false);
+	const toggleVisiblePass = () => setIsVisiblePass((prev) => !prev);
 
 	const onSubmit = async (data: TLoginSchema) => {
 		console.log('data: ', data);
@@ -28,7 +36,7 @@ const LoginFormPage = (props: Props) => {
 		signIn('credentials', {
 			email: data.email,
 			password: data.password,
-			remember_me: data.remember_me,
+			remember_me: data.remember_me ? 'true' : 'false',
 			callbackUrl: '/',
 		});
 	};
@@ -53,13 +61,16 @@ const LoginFormPage = (props: Props) => {
 								>
 									Email:
 								</label>
-								<input
-									className={`${classes['form-field']} ${classes['email']}`}
-									id='Email'
-									type='email'
-									placeholder='Your email address'
-									{...register('email')}
-								/>
+								<div className='relative'>
+									<EnvelopeIcon className='absolute left-2 top-1/2 transform -translate-y-1/2 h-6 w-6' />
+									<input
+										className={`${classes['form-field']} ${classes['email']}`}
+										id='Email'
+										type='email'
+										style={{ paddingLeft: '35px' }}
+										{...register('email')}
+									/>
+								</div>
 								{errors.email && (
 									<p
 										className={classes.error}
@@ -73,13 +84,29 @@ const LoginFormPage = (props: Props) => {
 								>
 									Password:
 								</label>
-								<input
-									className={`${classes['form-field']} ${classes['password']}`}
-									id='password'
-									type='password'
-									placeholder='Password'
-									{...register('password')}
-								/>
+								<div className='relative'>
+									<KeyIcon className='absolute left-2 top-1/2 transform -translate-y-1/2 h-6 w-6' />
+									{isVisiblePass ? (
+										<EyeIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() => toggleVisiblePass()}
+										/>
+									) : (
+										<EyeSlashIcon
+											className='absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 cursor-pointer'
+											onClick={() => toggleVisiblePass()}
+										/>
+									)}
+									<input
+										className={`${classes['form-field']} ${classes['password']}`}
+										id='password'
+										type={
+											isVisiblePass ? 'text' : 'password'
+										}
+										style={{ paddingLeft: '35px' }}
+										{...register('password')}
+									/>
+								</div>
 								{errors.password && (
 									<p
 										className={classes.error}

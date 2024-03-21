@@ -11,6 +11,7 @@ import { addressSchema } from '@/lib/types';
 import type { TAddressSchema } from '@/lib/types';
 import { states } from '@/utils/counties-locals/states';
 import type { users, user_address } from '@prisma/client';
+import { PhoneIcon } from '@heroicons/react/16/solid';
 
 import { useSession } from 'next-auth/react';
 
@@ -169,17 +170,21 @@ const ProfilePage = () => {
 								>
 									Phone Number:
 								</label>
-								<input
-									className={`${classes['form-field']} ${classes.name}`}
-									id='phone'
-									type='text'
-									placeholder='Phone Number'
-									required
-									{...register('phone', {
-										required: 'phone is required',
-									})}
-									defaultValue={userAddress?.phone || ''}
-								/>
+								<div className='relative'>
+									<PhoneIcon className='absolute left-2 top-1/2 transform -translate-y-1/2 h-6 w-6' />
+
+									<input
+										className={`${classes['form-field']} ${classes.name}`}
+										id='phone'
+										type='text'
+										style={{ paddingLeft: '35px' }}
+										required
+										{...register('phone', {
+											required: 'phone is required',
+										})}
+										defaultValue={userAddress?.phone || ''}
+									/>
+								</div>
 								{errors.phone && (
 									<p
 										className={classes.error}

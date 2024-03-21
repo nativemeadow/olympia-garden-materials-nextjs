@@ -34,7 +34,7 @@ export default function RootLayout({
 						listClasses={`${classes.mx_2} font-bold`}
 						capitalizeLinks
 					/>
-					<main className='main'>{children}</main>
+					<main>{children}</main>
 					<Footer />
 				</Providers>
 				<div id='backdrop-hook'></div>

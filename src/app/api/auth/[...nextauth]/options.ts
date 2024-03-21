@@ -71,12 +71,19 @@ export const authOptions: NextAuthOptions = {
 					}
 				}
 
+				console.log(
+					'User',
+					user,
+					'remember me:',
+					credentials.remember_me
+				);
 				return {
 					id: user.id + '',
 					uuid: user.uuid,
 					name: user.name,
 					email: user.email,
-					remember_me: credentials.remember_me ? true : false,
+					remember_me:
+						credentials.remember_me === 'true' ? true : false,
 					resetToken: user.reset_token,
 				};
 			},
@@ -87,23 +94,26 @@ export const authOptions: NextAuthOptions = {
 			if (token && token.sub && typeof token.uuid === 'string') {
 				session = {
 					...session,
+					//maxAge: token.maxAge,
 					user: {
 						...session.user,
 						id: token.sub,
 						uuid: token.uuid,
 					},
 				};
+				console.log('token', token, 'session', session);
+				const expires = token.maxAge
+					? new Date(Date.now() + Number(token.maxAge) * 1000)
+					: new Date(Date.now() + Number(token.maxAge) * 1000);
+				session.expires = expires.toISOString();
 			}
-			//console.log('Session Callback', { session });
 			return session;
 		},
 		jwt: async ({ token, user }) => {
 			const userSignIn = user as users;
 			if (user) {
-				console.log('User remember', userSignIn);
-				token.maxAge = userSignIn.remember_me
-					? 7 * 24 * 60 * 60
-					: 60 * 60; // 1 week or 1 hour
+				const trueRM = userSignIn.remember_me === 'true' ? true : false;
+				token.maxAge = trueRM ? 7 * 24 * 60 * 60 : 60 * 60; // 1 week or 1 hour
 				// user is in the session callback (above) is set here in the JWT callback
 				token.user = userSignIn;
 				return {

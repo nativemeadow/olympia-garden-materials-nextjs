@@ -3,7 +3,7 @@ import z from 'zod';
 export const loginSchema = z.object({
 	email: z.string().email(),
 	password: z.string().max(100),
-	remember_me: z.boolean().optional(),
+	remember_me: z.boolean().default(false).optional(),
 });
 
 export type TLoginSchema = z.infer<typeof loginSchema>;
@@ -205,12 +205,16 @@ export type CategoryProduct = {
 
 export const contactUsSchema = z.object({
 	name: z.string().min(3, { message: 'please enter you name.' }),
-	email: z.string().email({ message: 'email does not appear to be valid' }),
+	email: z
+		.string()
+		.email({ message: 'email does not appear to be valid' })
+		.optional(),
 	phone: z
 		.string()
-		.min(10, { message: 'please enter a 10 digit phone number' }),
+		.min(10, { message: 'please enter a 10 digit phone number' })
+		.optional(),
 	subject: z.string().min(3, { message: 'please enter a subject' }),
-	message: z.string().min(10, { message: 'please enter a message' }),
+	message: z.string().min(3, { message: 'please enter a message' }),
 });
 
 export type TContactUsSchema = z.infer<typeof contactUsSchema>;
